@@ -53,6 +53,14 @@ All behaviour is controlled through environment variables:
 | `TRITON_ATTENTION_REDUCE_IN_FP32` | Cast Triton attention reduce op to FP32           | false                                 | boolean (true or false)                                                                   |
 | `TOOL_CALL_PARSER`                | Defines the parser used to interpret responses    |                                       | "llama3", "llama4", "mistral", "qwen25", "deepseekv3"                                     |
 | `REASONING_PARSER`                | Defines the parser used for reasoning traces      |                                       | "llama3", "llama4", "mistral", "qwen25", "deepseekv3"                                     |
+| `SPECULATIVE_ALGORITHM`            | Spec algorithm                                    |                                       | "EAGLE", "EAGLE3", "NEXTN", "STANDALONE", "NGRAM", "DFLASH", "DSPARK"                     |
+| `SPECULATIVE_DRAFT_MODEL_PATH`     | Path to draft model (HF repo or local)            |                                       | Hugging Face repo ID or local folder path                                                  |
+| `SPECULATIVE_DRAFT_MODEL_REVISION` | Draft model revision                              |                                       | Branch name, tag name, or commit id                                                        |
+| `SPECULATIVE_NUM_STEPS`            | Number of draft steps per iteration               |                                       |                                                                                           |
+| `SPECULATIVE_EAGLE_TOPK`           | Top-K tokens from draft model per step            |                                       |                                                                                           |
+| `SPECULATIVE_NUM_DRAFT_TOKENS`     | Total draft tokens per request                    |                                       |                                                                                           |
+| `SPECULATIVE_ADAPTIVE`             | Enable adaptive speculative decoding              | false                                 | boolean (true or false)                                                                   |
+| `ENABLE_MULTI_LAYER_EAGLE`         | Enable multi-layer Eagle                          | false                                 | boolean (true or false)                                                                   |
 
 ## Tool/Function Calling and Reasoning
 
@@ -64,6 +72,35 @@ All behaviour is controlled through environment variables:
 - **Reasoning**: Set the `REASONING_PARSER` environment variable to match your model family if you want to enable reasoning traces parsing. If unset, this worker does not pass `--reasoning-parser` to SGLang.
   - Example (docker-compose): add `# REASONING_PARSER=llama3` under `environment:` (uncomment to use).
   - Example (RunPod Hub): set the `REASONING_PARSER` env var in the UI.
+
+## Speculative Decoding
+
+SGLang поддерживает speculative decoding с алгоритмами EAGLE, EAGLE3, NEXTN, DFLASH, DSPARK, NGRAM и STANDALONE. Для включения задайте переменные окружения:
+
+- **`SPECULATIVE_ALGORITHM`** — алгоритм (обязательно): `EAGLE`, `EAGLE3`, `NEXTN`, `STANDALONE`, `NGRAM`, `DFLASH`, `DSPARK`
+- **`SPECULATIVE_DRAFT_MODEL_PATH`** — путь к draft-модели на HuggingFace Hub или локально
+- **`SPECULATIVE_NUM_STEPS`** — количество speculative шагов за итерацию
+- **`SPECULATIVE_EAGLE_TOPK`** — top-K токенов с draft-модели за шаг
+- **`SPECULATIVE_NUM_DRAFT_TOKENS`** — общее число draft-токенов на запрос
+
+### Пример для Gemma 4 с NEXTN
+
+```bash
+python -m sglang.launch_server --model-path unsloth/Gemma-4-31B-NVFP4 \
+    --speculative-algorithm NEXTN \
+    --speculative-num-steps 3 \
+    --speculative-eagle-topk 1 \
+    --speculative-num-draft-tokens 4
+```
+
+Через переменные окружения worker'а:
+
+- `SPECULATIVE_ALGORITHM=NEXTN`
+- `SPECULATIVE_NUM_STEPS=3`
+- `SPECULATIVE_EAGLE_TOPK=1`
+- `SPECULATIVE_NUM_DRAFT_TOKENS=4`
+
+> **Примечание:** Для алгоритмов EAGLE/NEXTN также требуется указать `SPECULATIVE_DRAFT_MODEL_PATH` — путь к draft-модели. Для Gemma 4 draft-модель обычно встроена в основной чекпоинт, и `NEXTN` автоматически определяется как `FROZEN_KV_MTP`.
 
 ## API Usage
 

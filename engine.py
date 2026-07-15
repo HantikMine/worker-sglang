@@ -62,6 +62,28 @@ class SGlangEngine:
             "SAMPLING_BACKEND": "--sampling-backend",
             "TOOL_CALL_PARSER": "--tool-call-parser",
             "REASONING_PARSER": "--reasoning-parser",
+            # Speculative decoding
+            "SPECULATIVE_ALGORITHM": "--speculative-algorithm",
+            "SPECULATIVE_DRAFT_MODEL_PATH": "--speculative-draft-model-path",
+            "SPECULATIVE_DRAFT_MODEL_REVISION": "--speculative-draft-model-revision",
+            "SPECULATIVE_DRAFT_LOAD_FORMAT": "--speculative-draft-load-format",
+            "SPECULATIVE_NUM_STEPS": "--speculative-num-steps",
+            "SPECULATIVE_EAGLE_TOPK": "--speculative-eagle-topk",
+            "SPECULATIVE_NUM_DRAFT_TOKENS": "--speculative-num-draft-tokens",
+            "SPECULATIVE_ACCEPT_THRESHOLD_SINGLE": "--speculative-accept-threshold-single",
+            "SPECULATIVE_ACCEPT_THRESHOLD_ACC": "--speculative-accept-threshold-acc",
+            "SPECULATIVE_TOKEN_MAP": "--speculative-token-map",
+            "SPECULATIVE_ATTENTION_MODE": "--speculative-attention-mode",
+            "SPECULATIVE_DRAFT_ATTENTION_BACKEND": "--speculative-draft-attention-backend",
+            "SPECULATIVE_DRAFT_WINDOW_SIZE": "--speculative-draft-window-size",
+            "SPECULATIVE_MOE_RUNNER_BACKEND": "--speculative-moe-runner-backend",
+            "SPECULATIVE_MOE_A2A_BACKEND": "--speculative-moe-a2a-backend",
+            "SPECULATIVE_DRAFT_MODEL_QUANTIZATION": "--speculative-draft-model-quantization",
+            "SPECULATIVE_DFLASH_BLOCK_SIZE": "--speculative-dflash-block-size",
+            "SPECULATIVE_DSPARK_BLOCK_SIZE": "--speculative-dspark-block-size",
+            "SPECULATIVE_DSPARK_SPS_TABLE_PATH": "--speculative-dspark-sps-table-path",
+            "SPECULATIVE_DSPARK_CONFIDENCE_STS_PATH": "--speculative-dspark-confidence-sts-path",
+            "SPECULATIVE_ADAPTIVE_CONFIG": "--speculative-adaptive-config",
         }
 
         # Boolean flags
@@ -77,6 +99,12 @@ class SGlangEngine:
             "ENABLE_P2P_CHECK",
             "ENABLE_FLASHINFER_MLA",
             "TRITON_ATTENTION_REDUCE_IN_FP32",
+            # Speculative decoding
+            "SPECULATIVE_USE_REJECTION_SAMPLING",
+            "SPECULATIVE_SKIP_DP_MLP_SYNC",
+            "SPECULATIVE_ADAPTIVE",
+            "ENABLE_MULTI_LAYER_EAGLE",
+            "SPECULATIVE_DSPARK_ALIGN_VERIFY_TOKENS_TO_GRAPH_TIER",
         ]
 
         # Add options from environment variables only if they are set

@@ -22,6 +22,13 @@ services:
       # - REASONING_PARSER=llama3
       - HF_TOKEN=${HF_TOKEN}
 
+      # Speculative decoding (EAGLE / NEXTN)
+      # - SPECULATIVE_ALGORITHM=NEXTN
+      # - SPECULATIVE_DRAFT_MODEL_PATH=<draft-model-hf-repo>
+      # - SPECULATIVE_NUM_STEPS=3
+      # - SPECULATIVE_EAGLE_TOPK=1
+      # - SPECULATIVE_NUM_DRAFT_TOKENS=4
+
       # make it work locally with <= 8 GB VRAM
       - MEM_FRACTION_STATIC=0.5
       - CHUNKED_PREFILL_SIZE=512
