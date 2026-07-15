@@ -1,4 +1,4 @@
-FROM lmsysorg/sglang:latest
+FROM lmsysorg/sglang:dev-cu13
 
 # Set working directory to the one already used by the base image
 WORKDIR /sgl-workspace
