@@ -5,7 +5,8 @@ WORKDIR /sgl-workspace
 
 # install dependencies (base image has pip --break-system-packages pre-configured)
 COPY requirements.txt ./
-RUN python3 -m pip install --no-cache-dir -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python3 -m pip install --no-cache-dir -r requirements.txt
 
 # copy source files
 COPY handler.py engine.py utils.py download_model.py test_input.json ./
