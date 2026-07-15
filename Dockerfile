@@ -3,10 +3,11 @@ FROM lmsysorg/sglang:latest
 # Set working directory to the one already used by the base image
 WORKDIR /sgl-workspace
 
-# install dependencies (base image has pip --break-system-packages pre-configured)
+# install dependencies (base image has pip --break-system-packages pre-configured;
+# cryptography is installed via debian — must ignore it to allow runpod's newer version)
 COPY requirements.txt ./
 RUN --mount=type=cache,target=/root/.cache/pip \
-    python3 -m pip install --no-cache-dir -r requirements.txt
+    python3 -m pip install --no-cache-dir --ignore-installed cryptography -r requirements.txt
 
 # copy source files
 COPY handler.py engine.py utils.py download_model.py test_input.json ./
